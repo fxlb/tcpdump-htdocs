@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 </HEAD><BODY>
 <H1>Man page of TCPDUMP</H1>
-Section: User Commands  (1)<BR>Updated: 8 February 2026<BR><A HREF="#index">Index</A>
+Section: User Commands  (1)<BR>Updated: 6 March 2026<BR><A HREF="#index">Index</A>
 <A HREF="./">Return to Main Contents</A><HR>
 <DIV class=version_boilerplate>
 <H4>This man page documents tcpdump version 5.0.0-PRE-GIT.</H4>
@@ -243,7 +243,7 @@ tcpdump - dump traffic on a network
 
 <BR>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[
+[ -- ] [
 <I>expression</I>
 
 ]
@@ -1384,148 +1384,160 @@ only packets for that <I>expression</I> is `true' will be dumped.
 For the <I>expression</I> syntax, see
 <B><A HREF="./pcap-filter.7.html">pcap-filter</A></B>(7).
 
+The best practice is to follow the pattern shown in the
+<CODE>SYNOPSIS</CODE>
+
+section above: first any option arguments in any order, then a
+`<B>--</B>'
+
+delimiter and then the
+<I>expression</I>
+
+as a single, quoted string &mdash; this works with all expressions, all
+implementations of
+<B>getopt_long</B>(3)
+
+and regardless of whether the
+<CODE>POSIXLY_CORRECT</CODE>
+
+environment variable is set.
 <P>
 
-The <I>expression</I> argument can be passed to <I>tcpdump</I> as either a single
-Shell argument, or as multiple Shell arguments, whichever is more convenient.
-Generally, if the expression contains Shell metacharacters, such as
-backslashes used to escape protocol names, it is easier to pass it as
-a single, quoted argument rather than to escape the Shell
-metacharacters.
-Multiple arguments are concatenated with spaces before being parsed.
+For backward compatibility reasons
+<I>tcpdump</I>
+
+also accepts
+<I>expression</I>
+
+as multiple non-option arguments, which it then internally concatenates using
+spaces, but this tends to cause complications.  In particular, unless
+individual non-option arguments are quoted or escaped as necessary, most shells
+will interpret any
+{<B>&lt;</B>,
+
+<CODE>&gt;</CODE>,
+
+<CODE>&lt;&lt;</CODE>,
+
+<CODE>&gt;&gt;</CODE>,
+
+<CODE>*</CODE>,
+
+<CODE>&amp;</CODE>,
+
+<CODE>|</CODE>,
+
+<CODE>\</CODE>,
+
+<CODE>(</CODE>,
+
+<B>)</B>}
+
+tokens first.  Also non-option arguments that begin with
+`<B>-</B>'
+
+followed by another character will usually be misinterpreted as option
+arguments regardless of any quoting &mdash; this can be mitigated by setting the
+<CODE>POSIXLY_CORRECT</CODE>
+
+environment variable, but only if such arguments follow other arguments that
+are obviously not options.  Also the POSIX interpretation does not allow any
+option arguments after the non-option
+<I>expression</I>
+
+argument(s).
 </DL>
 </DL>
 <H2 id="lbAF">EXAMPLES</H2>
 
 <P>
 
-To print all packets arriving at or departing from <I>sundown</I>:
+To print packets on all network interfaces, on Linux
+(it's often best to pass -n to display IP addresses rather than hostnames):
 <DL><DT><DD>
 <PRE>
-<CODE>tcpdump host sundown</CODE>
+<CODE>tcpdump -ni any</CODE>
 </PRE>
 
 </DL>
 
 <P>
 
-To print traffic between <I>helios</I> and either <I>hot</I> or <I>ace</I>:
+To print all packets on port 8080:
 <DL><DT><DD>
 <PRE>
-<CODE>tcpdump host helios and \( hot or ace \)</CODE>
+<CODE>tcpdump -n 'port 8080'</CODE>
 </PRE>
 
 </DL>
 
 <P>
 
-To print all IP packets between <I>ace</I> and any host except <I>helios</I>:
+To print all packets sent to or from 192.0.2.1:
 <DL><DT><DD>
 <PRE>
-<CODE>tcpdump ip host ace and not helios</CODE>
+<CODE>tcpdump -n 'host 192.0.2.1'</CODE>
 </PRE>
 
 </DL>
 
 <P>
 
-To print all traffic between local hosts and hosts at Berkeley:
+To print all packets sent from 192.0.2.1 on port 53:
 <DL><DT><DD>
 <PRE>
-<CODE>tcpdump net ucb-ether</CODE>
+<CODE>tcpdump -n 'src host 192.0.2.1 and port 53'</CODE>
 </PRE>
 
 </DL>
 
 <P>
 
-To print all ftp traffic through internet gateway <I>snup</I>:
-(note that the expression is quoted to prevent the shell from
-(mis-)interpreting the parentheses):
+To print all ICMP packets:
 <DL><DT><DD>
 <PRE>
-<CODE>tcpdump 'gateway snup and (port ftp or ftp-data)'</CODE>
+<CODE>tcpdump -n icmp</CODE>
 </PRE>
 
 </DL>
 
 <P>
 
-To print traffic neither sourced from nor destined for local hosts
-(if you gateway to one other net, this stuff should never make it
-onto your local net).
+To write all packets on port 8080 to <I>out.pcap</I> (-v prints a live summary of how many packets have been captured):
 <DL><DT><DD>
 <PRE>
-<B>tcpdump ip and not net </B><I>localnet</I>
+<CODE>tcpdump -v -w out.pcap 'port 8080'</CODE>
 </PRE>
 
 </DL>
 
 <P>
 
-To print the start and end packets (the SYN and FIN packets) of each
-TCP conversation that involves a non-local host.
+To print a packet number on each line (for example to use in a discussion, &quot;there's a problem with packet 12...&quot;):
 <DL><DT><DD>
 <PRE>
-<B>tcpdump 'tcp[tcpflags] &amp; (tcp-syn|tcp-fin) != 0 and not src and dst net </B><I>localnet</I>'
+<CODE>tcpdump -n -# 'port 8080'</CODE>
 </PRE>
 
 </DL>
 
 <P>
 
-To print the TCP packets with flags RST and ACK both set.
-(i.e. select only the RST and ACK flags in the flags field, and if the result
-is &quot;RST and ACK both set&quot;, match)
+To print the start and end packets (the SYN and FIN packets) of each TCP conversation.
 <DL><DT><DD>
 <PRE>
-<CODE>tcpdump 'tcp[tcpflags] &amp; (tcp-rst|tcp-ack) == (tcp-rst|tcp-ack)'</CODE>
+<CODE>tcpdump -n 'tcp[tcpflags] &amp; (tcp-syn|tcp-fin) != 0'</CODE>
 </PRE>
 
 </DL>
 
 <P>
 
-To print all IPv4 HTTP packets to and from port 80, i.e. print only
-packets that contain data, not, for example, SYN and FIN packets and
-ACK-only packets.  (IPv6 is left as an exercise for the reader.)
+To print all IPv4 HTTP packets to and from port 80, i.e. print only packets that
+contain data, not, for example, SYN and FIN packets and ACK-only packets.
 <DL><DT><DD>
 <PRE>
-<CODE>tcpdump 'tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)'</CODE>
-</PRE>
-
-</DL>
-
-<P>
-
-To print IP packets longer than 576 bytes sent through gateway <I>snup</I>:
-<DL><DT><DD>
-<PRE>
-<CODE>tcpdump 'gateway snup and ip[2:2] &gt; 576'</CODE>
-</PRE>
-
-</DL>
-
-<P>
-
-To print IP broadcast or multicast packets that were
-<I>not</I>
-
-sent via Ethernet broadcast or multicast:
-<DL><DT><DD>
-<PRE>
-<CODE>tcpdump 'ether[0] &amp; 1 = 0 and ip[16] &gt;= 224'</CODE>
-</PRE>
-
-</DL>
-
-<P>
-
-To print all ICMP packets that are not echo requests/replies (i.e., not
-ping packets):
-<DL><DT><DD>
-<PRE>
-<CODE>tcpdump 'icmp[icmptype] != icmp-echo and icmp[icmptype] != icmp-echoreply'</CODE>
+<CODE>tcpdump -n 'tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)'</CODE>
 </PRE>
 
 </DL>
@@ -2799,7 +2811,7 @@ skewed time stamps (the time change is ignored).
 </DL>
 <HR>
 <H2>COLOPHON</H2>
-This HTML man page was generated at 20:04:41 GMT, February 08, 2026
+This HTML man page was generated at 16:03:26 GMT, March 07, 2026
 from a source man page in "The Tcpdump Group" git repositories
 using man2html and other tools.
 </BODY>
