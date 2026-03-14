@@ -151,7 +151,7 @@ PROG = my_program
 
 all: $(PROG)
 
-$(PROG): ../libpcap/libpcap.a
+$(PROG): ../libpcap/libpcap.a $(PROG).c
 	gcc -O0 -ggdb -finstrument-functions \
 	-I../libpcap \
 	-o $(PROG) $(PROG).c ../libpcap/instrument-functions.c \
