@@ -25,13 +25,13 @@ SYNOPSIS
 DESCRIPTION
        pcap_next_ex()  reads the next packet and returns a success/failure in-
        dication.  If the packet was read without problems, the pointer pointed
-       to by the pkt_header argument is set to point to the pcap_pkthdr struct
-       for the packet, and the pointer pointed to by the pkt_data argument  is
-       set to point to the data in the packet.  The struct pcap_pkthdr and the
-       packet data are not to be freed by the caller, and are  not  guaranteed
-       to  be  valid  after  the  next  call  to  pcap_next_ex(), pcap_next(),
-       pcap_loop(3PCAP), or pcap_dispatch(3PCAP); if the code  needs  them  to
-       remain valid, it must make a copy of them.
+       to by the pkt_header argument is set to point to the pcap_pkthdr struc-
+       ture for the packet, and the pointer pointed to by the  pkt_data  argu-
+       ment is set to point to the data in the packet.  The struct pcap_pkthdr
+       and the packet data are not to be freed by  the  caller,  and  are  not
+       guaranteed   to  be  valid  after  the  next  call  to  pcap_next_ex(),
+       pcap_next(), pcap_loop(3PCAP), or  pcap_dispatch(3PCAP);  if  the  code
+       needs them to remain valid, it must make a copy of them.
 
        pcap_next()  reads  the  next packet (by calling pcap_dispatch() with a
        cnt of 1) and returns a u_char pointer to the data in that packet.  The
