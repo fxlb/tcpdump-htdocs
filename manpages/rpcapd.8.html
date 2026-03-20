@@ -93,12 +93,12 @@ rpcapd
 [
 <B>-K</B>
 
-<I>ssl_keyfile</I>
+<I>tls_keyfile</I>
 
 ] [
 <B>-X</B>
 
-<I>ssl_certfile</I>
+<I>tls_certfile</I>
 
 ] [
 <B>-C</B>
@@ -115,7 +115,9 @@ rpcapd
 and filter part of libpcap to be run on a remote system.
 <P>
 
-Rpcapd can run in two modes: passive mode (default) and active mode.
+<I>Rpcapd</I>
+
+can run in two modes: passive mode (default) and active mode.
 <P>
 
 In passive mode, the client (e.g., a network sniffer) connects to
@@ -146,7 +148,20 @@ can be configured to establish the connection to a given host,
 which has to be configured in order to wait for that connection. After
 establishing the connection, the protocol continues its job in almost
 the same way in both active and passive mode.
-<H2 id="lbAE">Configuration file</H2>
+<H2 id="lbAE">TLS support</H2>
+
+By default
+<I>rpcapd</I>
+
+will not support TLS connections. If built with TLS support, it will
+support TLS connections only if run with the
+<CODE>-S</CODE>
+
+option, in which case it will
+<I>require</I>
+
+TLS connections.
+<H2 id="lbAF">Configuration file</H2>
 
 <P>
 
@@ -175,7 +190,7 @@ with the desired flags plus
 
 Rpcapd will parse all the parameters and save them into the specified
 configuration file.
-<H2 id="lbAF">Installing rpcapd on Win32</H2>
+<H2 id="lbAG">Installing rpcapd on Win32</H2>
 
 <P>
 
@@ -200,7 +215,7 @@ flag (in order to make it run as a service) and the
 <CODE>-f rpcapd.ini</CODE>
 
 flag.
-<H2 id="lbAG">Starting rpcapd on Win32</H2>
+<H2 id="lbAH">Starting rpcapd on Win32</H2>
 
 <P>
 
@@ -215,10 +230,10 @@ the requested parameters except for the
 
 flag.  The capture server will
 start in the foreground.
-<H2 id="lbAH">Installing rpcapd on Unix-like systems</H2>
+<H2 id="lbAI">Installing rpcapd on Unix-like systems</H2>
 
 TBD
-<H2 id="lbAI">Starting rpcapd on Unix-like systems</H2>
+<H2 id="lbAJ">Starting rpcapd on Unix-like systems</H2>
 
 <I>rpcapd</I>
 
@@ -281,7 +296,7 @@ entry has been added to
 
 the rpcapd service can be enabled by telling xinetd
 to reread its configuration file.
-<H2 id="lbAJ">OPTIONS</H2>
+<H2 id="lbAK">OPTIONS</H2>
 
 <DL>
 <DT><CODE>-b</CODE><I> address</I>
@@ -418,37 +433,37 @@ Print this help screen.
 If
 <I>rpcapd</I>
 
-was compiled with SSL support, the following options are also
+was compiled with TLS support, the following options are also
 available:
 <DL>
 <DT><CODE>-S</CODE>
 
 <DD>
-Require that SSL be used on connections.
+Enable TLS, and require that TLS be used on connections.
 <DT><CODE>-C</CODE>
 
 <DD>
-With SSL enabled, XXX - I'm not sure how *fetching* the list of
+With TLS enabled, XXX - I'm not sure how *fetching* the list of
 compression mechanisms does anything to compression.
-<DT><CODE>-K</CODE><I> ssl_keyfile</I>
+<DT><CODE>-K</CODE><I> tls_keyfile</I>
 
 <DD>
-With SSL enabled, use
-<I>ssl_keyfile</I>
+With TLS enabled, use
+<I>tls_keyfile</I>
 
-as the SSL key file.
-<DT><CODE>-X</CODE><I> ssl_certfile</I>
+as the TLS key file.
+<DT><CODE>-X</CODE><I> tls_certfile</I>
 
 <DD>
-With SSL enabled, use
-<I>ssl_certfile</I>
+With TLS enabled, use
+<I>tls_certfile</I>
 
-as the SSL certificate file.
+as the TLS certificate file.
 <BR>
 
 
 </DL>
-<H2 id="lbAK">SEE ALSO</H2>
+<H2 id="lbAL">SEE ALSO</H2>
 
 <A HREF='./pcap.3pcap.html'><B>pcap</B></A>(3PCAP),
 
@@ -458,7 +473,7 @@ as the SSL certificate file.
 
 <HR>
 <H2>COLOPHON</H2>
-This HTML man page was generated at 19:16:13 GMT, October 18, 2025
+This HTML man page was generated at 13:08:39 GMT, March 20, 2026
 from a source man page in "The Tcpdump Group" git repositories
 using man2html and other tools.
 </BODY>

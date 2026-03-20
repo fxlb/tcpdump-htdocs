@@ -20,7 +20,7 @@ SYNOPSIS
        rpcapd [ -b address ] [ -p port ] [ -t data_port ] [ -4 ]
                [ -l host_list ] [ -a host,port ] [ -n ] [ -v ] [ -d ] [ -i ]
                [ -D ] [ -s config_file ] [ -f config_file ] [ -S ]
-               [ -K ssl_keyfile ] [ -X ssl_certfile ] [ -C ]
+               [ -K tls_keyfile ] [ -X tls_certfile ] [ -C ]
 
 DESCRIPTION
        Rpcapd is a daemon (Unix) or service (Win32) that  allows  the  capture
@@ -42,6 +42,11 @@ DESCRIPTION
        has to be configured in order to wait for that connection. After estab-
        lishing  the  connection,  the protocol continues its job in almost the
        same way in both active and passive mode.
+
+TLS support
+       By default rpcapd will not support TLS connections. If built  with  TLS
+       support,  it  will  support TLS connections only if run with the -S op-
+       tion, in which case it will require TLS connections.
 
 Configuration file
        The user can create a configuration file in the same directory  as  the
@@ -161,19 +166,19 @@ OPTIONS
 
        -h     Print this help screen.
 
-       If rpcapd was compiled with SSL support, the following options are also
+       If rpcapd was compiled with TLS support, the following options are also
        available:
 
-       -S     Require that SSL be used on connections.
+       -S     Enable TLS, and require that TLS be used on connections.
 
-       -C     With SSL enabled, XXX - I'm not sure how *fetching* the list  of
+       -C     With TLS enabled, XXX - I'm not sure how *fetching* the list  of
               compression mechanisms does anything to compression.
 
-       -K ssl_keyfile
-              With SSL enabled, use ssl_keyfile as the SSL key file.
+       -K tls_keyfile
+              With TLS enabled, use tls_keyfile as the TLS key file.
 
-       -X ssl_certfile
-              With SSL enabled, use ssl_certfile as the SSL certificate file.
+       -X tls_certfile
+              With TLS enabled, use tls_certfile as the TLS certificate file.
 
 SEE ALSO
        pcap(3PCAP), rpcapd-config(5)
