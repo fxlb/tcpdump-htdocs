@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 </HEAD><BODY>
 <H1>Man page of PCAP_NEXT_EX</H1>
-Section: Misc. Reference Manual Pages (3PCAP)<BR>Updated: 5 March 2022<BR>
+Section: Misc. Reference Manual Pages (3PCAP)<BR>Updated: 26 March 2026<BR>
 <A HREF="./">Return to Main Contents</A><HR>
 <DIV class=version_boilerplate>
 <H4>This man page documents libpcap version 1.11.0-PRE-GIT.</H4>
@@ -161,7 +161,10 @@ being read from a live capture and the packet buffer timeout expired,
 
 if packets
 are being read from a ``savefile'' and there are no more packets to read
-from the savefile,
+from the savefile or if
+<A HREF='./pcap_breakloop.3pcap.html'><B>pcap_breakloop</B></A>(3PCAP)
+
+has been called,
 <CODE>PCAP_ERROR_NOT_ACTIVATED</CODE>
 
 if called on a capture handle that has been created but not activated,
@@ -204,7 +207,7 @@ way to determine whether an error occurred or not.
 
 <HR>
 <H2>COLOPHON</H2>
-This HTML man page was generated at 13:14:44 GMT, March 14, 2026
+This HTML man page was generated at 21:59:47 GMT, March 26, 2026
 from a source man page in "The Tcpdump Group" git repositories
 using man2html and other tools.
 </BODY>
