@@ -255,7 +255,7 @@
 				<td class=group>return</td>
 				<td class=op>ret</td>
 				<td class='addr brd'>#k</td>
-				<td class=addr>a</td>
+				<td class=addr><span class=hl>a</span><sup>[<a href='#footnote9'>9</a>]</sup></td>
 			</tr>
 
 			<tr class=misc>
@@ -418,6 +418,10 @@
 				of the 1993 specification, these are an extension that only NetBSD
 				kernel implements.  Note that NetBSD defines these as two distinct
 				instructions rather than one instruction with two addressing modes.
+			</li>
+			<li id='footnote9'>
+				In libpcap the notation for this addressing mode of this instruction is
+				just <code>ret</code> rather than <code>ret a</code>.
 			</li>
 		</ol>
 	</div>
