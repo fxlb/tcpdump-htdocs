@@ -674,7 +674,8 @@ OPTIONS
               limiter  and  then  the expression as a single, quoted string --
               this  works  with  all  expressions,  all   implementations   of
               getopt_long(3) and regardless of whether the POSIXLY_CORRECT en-
-              vironment variable is set.
+              vironment variable is set. Exception: On Windows,  with  cmd.exe
+              command line, single quoting must be replaced by double quoting.
 
               For backward compatibility reasons tcpdump also accepts  expres-
               sion  as multiple non-option arguments, which it then internally
@@ -1402,4 +1403,4 @@ BUGS
        A packet trace that crosses a daylight savings time  change  will  give
        skewed time stamps (the time change is ignored).
 
-                                 6 March 2026                       TCPDUMP(1)
+                                 24 April 2026                      TCPDUMP(1)
